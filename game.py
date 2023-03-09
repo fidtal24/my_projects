@@ -9,6 +9,14 @@ import rubik
 import cube_solver as solver
 import patterns
 
+# rotatioin matrix LUT
+trig_rot_mat_lut = []
+for deg in range(360):
+	theta = np.radians(deg)
+	c, s = np.cos(theta), np.sin(theta)
+	trig_rot_mat_lut.append([[[c, 1 - c], [1 - c, -s], [1 - c, s]],
+						[[1 - c, s], [c, 1 - c], [1 - c, -s]],
+						[[1 - c, -s], [1 - c, s], [c, 1 - c]]])
 
 # cube geometry and appearance
 # colors
@@ -256,21 +264,24 @@ class CubeRotator:
 		self.face_angles = [[0, 0, 1], [0, 0, -1], [0, 1, 0], [0, -1, 0], [-1, 0, 0], [1, 0, 0]]
 		self.relative_faces = ["F", "B", "U", "D", "L", "R"]
 
-
 	def get_rotation_matrix(self, num, angle, direction):
 		axis_num = 0
 		for i in range(3):
 			if angle[i] != 0:
 				axis_num = i
-		# Define the rotation matrix
-		theta = direction * np.radians(angle[axis_num])
-		c, s = np.cos(theta), np.sin(theta)
+
+		rot_mat = trig_rot_mat_lut[(direction * angle[axis_num]) % 360]
 		u = self.sheet_axis[num].normalize()
 		x, y, z = u
-		rotation_matrix = np.array(
-			[[c + x**2*(1-c), x*y*(1-c)-z*s, x*z*(1-c)+y*s],
-			[y*x*(1-c)+z*s, c+y**2*(1-c), y*z*(1-c)-x*s],
-			[z*x*(1-c)-y*s, z*y*(1-c)+x*s, c+z**2*(1-c)]])
+		dim_mat = [[[1, x ** 2], [x * y, z],  [x * z, y]],
+				   [[y * x, z],  [1, y ** 2], [y * z, x]],
+				   [[z * x, y],  [z * y, x],  [1, z ** 2]]]
+
+		rotation_matrix = np.empty((3, 3))
+		for i in range(3):
+			for j in range(3):
+				rotation_matrix[i, j] = np.dot(dim_mat[i][j], rot_mat[i][j])
+
 		return rotation_matrix
 
 	def rotate(self, faces: list[int], direction: list[int], is_animated: bool):
@@ -289,7 +300,7 @@ class CubeRotator:
 					sheet_of_cubes[i] = Vector3(*np.dot(rotation_matrix, cube))
 
 				# Update the cubes' rotations
-				clock.tick(120)
+				clock.tick(240)
 				for i, cube in enumerate(self.sheets[face]):
 					cube.update([angle * direction[faces.index(face)] for angle in angle_3d], list(sheet_of_cubes[i]))
 
