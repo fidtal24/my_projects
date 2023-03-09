@@ -32,9 +32,9 @@ ALL = [FIRST, MIDDLE, LAST]
 ALL_FLIPPED = [LAST, MIDDLE, FIRST]
 
 # sheet sequences
-SHEET_R_C_SEQ_CW  = [[FIRST, LAST_2_FLIPPED, LAST, FIRST_2], [FIRST_2, FIRST, LAST_2_FLIPPED, LAST]]
-SHEET_R_C_SEQ_CCW = [[FIRST, FIRST_2, LAST, LAST_2_FLIPPED], [FIRST_2, LAST, LAST_2_FLIPPED, FIRST]]
-SHEET_SEQ = [SHEET_R_C_SEQ_CW, SHEET_R_C_SEQ_CCW]
+SHEET_SEQ_CW  = [[FIRST, LAST_2_FLIPPED, LAST, FIRST_2], [FIRST_2, FIRST, LAST_2_FLIPPED, LAST]]
+SHEET_SEQ_CCW = [[FIRST, FIRST_2, LAST, LAST_2_FLIPPED], [FIRST_2, LAST, LAST_2_FLIPPED, FIRST]]
+SHEET_SEQ     = [SHEET_SEQ_CW, SHEET_SEQ_CCW]
 
 # side sequences
 SIDE_SEQ_F = [[[U, LAST, ALL_FLIPPED], [L, ALL, LAST], [D, FIRST, ALL], [R, ALL_FLIPPED, FIRST]],
@@ -198,6 +198,13 @@ class Rubik:
 	def bring_face_to_front(self, desired_front, ref_face: int, ref_location: int=R):
 		self.bring_face_to(desired_front, F)
 		self.bring_face_to(ref_face, ref_location)
+
+	def get_val(self, face, row, col):
+		return self.cube[face, row, col]
+
+	def play(self, instructions: list[str]):
+		for instruction in instructions:
+			self.rot(instruction)
 
 	def print_cube_isometric(self):
 		print("          ____")

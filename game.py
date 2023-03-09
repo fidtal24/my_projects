@@ -7,6 +7,7 @@ from pygame.math import Vector3
 import random
 import rubik
 import cube_solver as solver
+import patterns
 
 
 # cube geometry and appearance
@@ -71,8 +72,8 @@ def game_init():
 
 
 class Rubik3D:
-	def __init__(self, start, dest=solver.DEFAULT):
-		self.solver = solver.Solver(start, dest)
+	def __init__(self, start=patterns.DEFAULT):
+		self.rubik = rubik.Rubik(start)
 		self.cubes = [
 			# front sheet
 			Cube([-1, -1, -1], size),
@@ -106,40 +107,44 @@ class Rubik3D:
 			Cube([1, 1, 1], size),
 		]
 
-	def get_cube_val(self, face, row, col):
-		return self.solver.val(solver.CURR, (face, row, col))
+	def get_val(self, face, row, col):
+		return self.rubik.get_val(face, row, col)
 
 	def update_colors(self):
 		# front sheet
-		self.cubes[0].colors = [6, self.get_cube_val(rubik.B, 2, 2), 6, self.get_cube_val(rubik.D, 2, 0), self.get_cube_val(rubik.L, 2, 0), 6]
-		self.cubes[1].colors = [6, self.get_cube_val(rubik.B, 2, 1), 6, self.get_cube_val(rubik.D, 2, 1), 6, 6]
-		self.cubes[2].colors = [6, self.get_cube_val(rubik.B, 2, 0), 6, self.get_cube_val(rubik.D, 2, 2), 6, self.get_cube_val(rubik.R, 2, 2)]
-		self.cubes[3].colors = [6, self.get_cube_val(rubik.B, 1, 2), 6, 6, self.get_cube_val(rubik.L, 1, 0), 6]
-		self.cubes[4].colors = [6, self.get_cube_val(rubik.B, 1, 1), 6, 6, 6, 6]
-		self.cubes[5].colors = [6, self.get_cube_val(rubik.B, 1, 0), 6, 6, 6, self.get_cube_val(rubik.R, 1, 2)]
-		self.cubes[6].colors = [6, self.get_cube_val(rubik.B, 0, 2), self.get_cube_val(rubik.U, 0, 0), 6, self.get_cube_val(rubik.L, 0, 0), 6]
-		self.cubes[7].colors = [6, self.get_cube_val(rubik.B, 0, 1), self.get_cube_val(rubik.U, 0, 1), 6, 6, 6]
-		self.cubes[8].colors = [6, self.get_cube_val(rubik.B, 0, 0), self.get_cube_val(rubik.U, 0, 2), 6, 6, self.get_cube_val(rubik.R, 0, 2)]
+		self.cubes[0].colors = [6, self.get_val(rubik.B, 2, 2), 6, self.get_val(rubik.D, 2, 0), self.get_val(rubik.L, 2, 0), 6]
+		self.cubes[1].colors = [6, self.get_val(rubik.B, 2, 1), 6, self.get_val(rubik.D, 2, 1), 6, 6]
+		self.cubes[2].colors = [6, self.get_val(rubik.B, 2, 0), 6, self.get_val(rubik.D, 2, 2), 6, self.get_val(rubik.R, 2, 2)]
+		self.cubes[3].colors = [6, self.get_val(rubik.B, 1, 2), 6, 6, self.get_val(rubik.L, 1, 0), 6]
+		self.cubes[4].colors = [6, self.get_val(rubik.B, 1, 1), 6, 6, 6, 6]
+		self.cubes[5].colors = [6, self.get_val(rubik.B, 1, 0), 6, 6, 6, self.get_val(rubik.R, 1, 2)]
+		self.cubes[6].colors = [6, self.get_val(rubik.B, 0, 2), self.get_val(rubik.U, 0, 0), 6, self.get_val(rubik.L, 0, 0), 6]
+		self.cubes[7].colors = [6, self.get_val(rubik.B, 0, 1), self.get_val(rubik.U, 0, 1), 6, 6, 6]
+		self.cubes[8].colors = [6, self.get_val(rubik.B, 0, 0), self.get_val(rubik.U, 0, 2), 6, 6, self.get_val(rubik.R, 0, 2)]
 		# middle sheet
-		self.cubes[9].colors =  [6, 6, 6, self.get_cube_val(rubik.D, 1, 0), self.get_cube_val(rubik.L, 2, 1), 6]
-		self.cubes[10].colors = [6, 6, 6, self.get_cube_val(rubik.D, 1, 1), 6, 6]
-		self.cubes[11].colors = [6, 6, 6, self.get_cube_val(rubik.D, 1, 2), 6, self.get_cube_val(rubik.R, 2, 1)]
-		self.cubes[12].colors = [6, 6, 6, 6, self.get_cube_val(rubik.L, 1, 1), 6]
+		self.cubes[9].colors =  [6, 6, 6, self.get_val(rubik.D, 1, 0), self.get_val(rubik.L, 2, 1), 6]
+		self.cubes[10].colors = [6, 6, 6, self.get_val(rubik.D, 1, 1), 6, 6]
+		self.cubes[11].colors = [6, 6, 6, self.get_val(rubik.D, 1, 2), 6, self.get_val(rubik.R, 2, 1)]
+		self.cubes[12].colors = [6, 6, 6, 6, self.get_val(rubik.L, 1, 1), 6]
 		self.cubes[13].colors = [6, 6, 6, 6, 6, 6]
-		self.cubes[14].colors = [6, 6, 6, 6, 6, self.get_cube_val(rubik.R, 1, 1)]
-		self.cubes[15].colors = [6, 6, self.get_cube_val(rubik.U, 1, 0), 6, self.get_cube_val(rubik.L, 0, 1), 6]
-		self.cubes[16].colors = [6, 6, self.get_cube_val(rubik.U, 1, 1), 6, 6, 6]
-		self.cubes[17].colors = [6, 6, self.get_cube_val(rubik.U, 1, 2), 6, 6, self.get_cube_val(rubik.R, 0, 1)]
+		self.cubes[14].colors = [6, 6, 6, 6, 6, self.get_val(rubik.R, 1, 1)]
+		self.cubes[15].colors = [6, 6, self.get_val(rubik.U, 1, 0), 6, self.get_val(rubik.L, 0, 1), 6]
+		self.cubes[16].colors = [6, 6, self.get_val(rubik.U, 1, 1), 6, 6, 6]
+		self.cubes[17].colors = [6, 6, self.get_val(rubik.U, 1, 2), 6, 6, self.get_val(rubik.R, 0, 1)]
 		# back sheet
-		self.cubes[18].colors = [self.get_cube_val(rubik.F, 2, 0), 6, 6, self.get_cube_val(rubik.D, 0, 0), self.get_cube_val(rubik.L, 2, 2), 6]
-		self.cubes[19].colors = [self.get_cube_val(rubik.F, 2, 1), 6, 6, self.get_cube_val(rubik.D, 0, 1), 6, 6]
-		self.cubes[20].colors = [self.get_cube_val(rubik.F, 2, 2), 6, 6, self.get_cube_val(rubik.D, 0, 2), 6, self.get_cube_val(rubik.R, 2, 0)]
-		self.cubes[21].colors = [self.get_cube_val(rubik.F, 1, 0), 6, 6, 6, self.get_cube_val(rubik.L, 1, 2), 6]
-		self.cubes[22].colors = [self.get_cube_val(rubik.F, 1, 1), 6, 6, 6, 6, 6]
-		self.cubes[23].colors = [self.get_cube_val(rubik.F, 1, 2), 6, 6, 6, 6, self.get_cube_val(rubik.R, 1, 0)]
-		self.cubes[24].colors = [self.get_cube_val(rubik.F, 0, 0), 6, self.get_cube_val(rubik.U, 2, 0), 6, self.get_cube_val(rubik.L, 0, 2), 6]
-		self.cubes[25].colors = [self.get_cube_val(rubik.F, 0, 1), 6, self.get_cube_val(rubik.U, 2, 1), 6, 6, 6]
-		self.cubes[26].colors = [self.get_cube_val(rubik.F, 0, 2), 6, self.get_cube_val(rubik.U, 2, 2), 6, 6, self.get_cube_val(rubik.R, 0, 0)]
+		self.cubes[18].colors = [self.get_val(rubik.F, 2, 0), 6, 6, self.get_val(rubik.D, 0, 0), self.get_val(rubik.L, 2, 2), 6]
+		self.cubes[19].colors = [self.get_val(rubik.F, 2, 1), 6, 6, self.get_val(rubik.D, 0, 1), 6, 6]
+		self.cubes[20].colors = [self.get_val(rubik.F, 2, 2), 6, 6, self.get_val(rubik.D, 0, 2), 6, self.get_val(rubik.R, 2, 0)]
+		self.cubes[21].colors = [self.get_val(rubik.F, 1, 0), 6, 6, 6, self.get_val(rubik.L, 1, 2), 6]
+		self.cubes[22].colors = [self.get_val(rubik.F, 1, 1), 6, 6, 6, 6, 6]
+		self.cubes[23].colors = [self.get_val(rubik.F, 1, 2), 6, 6, 6, 6, self.get_val(rubik.R, 1, 0)]
+		self.cubes[24].colors = [self.get_val(rubik.F, 0, 0), 6, self.get_val(rubik.U, 2, 0), 6, self.get_val(rubik.L, 0, 2), 6]
+		self.cubes[25].colors = [self.get_val(rubik.F, 0, 1), 6, self.get_val(rubik.U, 2, 1), 6, 6, 6]
+		self.cubes[26].colors = [self.get_val(rubik.F, 0, 2), 6, self.get_val(rubik.U, 2, 2), 6, 6, self.get_val(rubik.R, 0, 0)]
+
+	def get_instructions_to_solve(self, dest) -> list[str]:
+		s = solver.Solver(self.rubik, dest)
+		return s.solve()
 
 # Define a class for your 3D object
 class Cube:
@@ -233,7 +238,7 @@ class Cube:
 
 class CubeRotator:
 	def __init__(self):
-		self.cube3d = Rubik3D(solver.DEFAULT)
+		self.cube3d = Rubik3D(patterns.CHECKER_BOARD)
 
 		right =      [cube for cube in self.cube3d.cubes if list(cube.position)[0] ==  1]
 		left  =      [cube for cube in self.cube3d.cubes if list(cube.position)[0] == -1]
@@ -342,12 +347,11 @@ if __name__ == "__main__":
 					exit()
 		if instructions[i][-1] == "_":
 			front, right = orientations.get(instructions[i][:-1])
-			front_color = cube_rotator.cube3d.solver.val(0, [front, 1, 1])
-			right_color = cube_rotator.cube3d.solver.val(0, [right, 1, 1])
-			cube_rotator.cube3d.solver.bring_cubes_to_front(front_color, right_color, 5)
+			front_color = cube_rotator.cube3d.rubik.get_val(front, 1, 1)
+			right_color = cube_rotator.cube3d.rubik.get_val(right, 1, 1)
+			cube_rotator.cube3d.rubik.bring_face_to_front(front_color, right_color)
 		else:
-			cube_rotator.cube3d.solver.play([instructions[i]])
+			cube_rotator.cube3d.rubik.play([instructions[i]])
 		cube_rotator.animated_rotation(instructions[i])
 		i += 1
 		i %= l
-

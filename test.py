@@ -1,19 +1,10 @@
 from cube_solver import Solver
 import numpy as np
+import patterns
 
-DEFAULT = np.array([[[0, 0, 0], [0, 0, 0], [0, 0, 0]], # orange
-					[[1, 1, 1], [1, 1, 1], [1, 1, 1]], # red
-					[[2, 2, 2], [2, 2, 2], [2, 2, 2]], # white
-					[[3, 3, 3], [3, 3, 3], [3, 3, 3]], # yellow
-					[[4, 4, 4], [4, 4, 4], [4, 4, 4]], # blue
-					[[5, 5, 5], [5, 5, 5], [5, 5, 5]]]) # green
+DEFAULT = patterns.DEFAULT
 
-CHECKER_BOARD = np.array([[[0, 1, 0], [1, 0, 1], [0, 1, 0]], # orange
-						  [[1, 0, 1], [0, 1, 0], [1, 0, 1]], # red
-						  [[2, 3, 2], [3, 2, 3], [2, 3, 2]], # white
-						  [[3, 2, 3], [2, 3, 2], [3, 2, 3]], # yellow
-						  [[4, 5, 4], [5, 4, 5], [4, 5, 4]], # blue
-						  [[5, 4, 5], [4, 5, 4], [5, 4, 5]]]) # green
+CHECKER_BOARD = patterns.CHECKER_BOARD
 
 final_run_test = np.array([[[0, 0, 0], [0, 0, 0], [3, 0, 5]], # orange
 						   [[1, 1, 1], [1, 1, 1], [5, 1, 3]], # red
@@ -78,37 +69,39 @@ fault_test = np.array([[[4, 4, 4], [0, 0, 0], [0, 0, 0]], # orange
 					   [[2, 1, 1], [2, 4, 4], [2, 4, 4]], # blue
 					   [[0, 0, 3], [5, 5, 3], [5, 5, 3]]]) # green
 
-c = Solver(DEFAULT, CHECKER_BOARD)
-# c.play(["U'", "B'"])
-# c.print_solution()
-# print("starting narkis")
-# c.narkis()
-# c.print_solution()
-# print("starting bottom_x")
-# c.bottom_x()
-# c.print_solution()
-# print("starting down_plus")
-# c.down_plus()
-# c.print_solution()
-# print("starting down_rectangle")
-# c.down_rectangle()
-# c.print_solution()
-# print("starting up_x")
-# c.up_x()
-# c.print_solution()
-# print("starting thick_plus")
-# c.thick_plus()
-# c.print_solution()
-# print("starting twisted_corners")
-# c.twisted_corners()
-# c.print_solution()
-# print("starting final_run")
-# c.final_run()
-# c.print_solution()
-# c.solve()
-# c.shuffle(10)
-c.play(['D', "U'", 'R', 'R', 'B', "R'", "F'", 'F', 'F', 'B'])
-c.print_solution()
-c.play(['D', 'L', 'B', 'D', 'F', 'D', "R'", 'F', 'D', "F'", 'D', 'L', "R'", 'F', 'F', 'D', 'L', 'L', 'B', 'B', 'D', "R'", 'D', "R'", 'D', 'L', 'D', "L'", "D'", 'F', 'D', "F'", 'D', 'B', 'D', "B'", "D'", 'B', 'D', "B'", "D'", 'B', 'D', "B'", "D'", 'B', 'D', "B'", "D'", 'B', 'D', "B'", "D'", 'R', 'D', "R'", "D'", 'R', 'D', "R'", "D'", 'R', 'D', "R'", "D'", 'R', 'D', "R'", 'D', 'F', 'D', "F'", "D'", 'B', 'D', "B'", "D'", "L'", "D'", 'L', 'D', "F'", "D'", 'F', 'D', 'L', 'D', "L'", 'R', 'D', "R'", "D'", "B'", "D'", 'B', 'B', 'D', "B'", "D'", "L'", "D'", 'L', 'D', 'D', 'R', 'D', "R'", "D'", "B'", "D'", 'B', "D'", "R'", "D'", 'R', 'D', 'F', 'D', "F'", 'L', 'B', 'D', "B'", "D'", 'B', 'D', "B'", "L'", 'D', 'L', 'D', 'D', "L'", 'D', 'L', 'D', "L'", 'D', 'L', 'D', 'D', "L'", 'D', 'L', "D'", "R'", 'D', "L'", "D'", 'R', 'D', 'L', "D'", "R'", 'D', "L'", "D'", 'R', 'L', "F'", "L'", 'F', 'L', "F'", "L'", 'F', 'D', 'D', 'L', "F'", "L'", 'F', 'L', "F'", "L'", 'F', 'D', 'L', "F'", "L'", 'F', 'L', "F'", "L'", 'F', 'D'])
-# c.solve()
-c.print_solution()
+if __name__ == "__main__":
+	# print(vars())
+	c = Solver(DEFAULT, CHECKER_BOARD)
+	# c.play(["U'", "B'"])
+	# c.print_solution()
+	# print("starting narkis")
+	# c.narkis()
+	# c.print_solution()
+	# print("starting bottom_x")
+	# c.bottom_x()
+	# c.print_solution()
+	# print("starting down_plus")
+	# c.down_plus()
+	# c.print_solution()
+	# print("starting down_rectangle")
+	# c.down_rectangle()
+	# c.print_solution()
+	# print("starting up_x")
+	# c.up_x()
+	# c.print_solution()
+	# print("starting thick_plus")
+	# c.thick_plus()
+	# c.print_solution()
+	# print("starting twisted_corners")
+	# c.twisted_corners()
+	# c.print_solution()
+	# print("starting final_run")
+	# c.final_run()
+	# c.print_solution()
+	# c.solve()
+	# c.shuffle(10)
+	c.play(['D', "U'", 'R', 'R', 'B', "R'", "F'", 'F', 'F', 'B'])
+	c.print_solution()
+	c.play(['D', 'L', 'B', 'D', 'F', 'D', "R'", 'F', 'D', "F'", 'D', 'L', "R'", 'F', 'F', 'D', 'L', 'L', 'B', 'B', 'D', "R'", 'D', "R'", 'D', 'L', 'D', "L'", "D'", 'F', 'D', "F'", 'D', 'B', 'D', "B'", "D'", 'B', 'D', "B'", "D'", 'B', 'D', "B'", "D'", 'B', 'D', "B'", "D'", 'B', 'D', "B'", "D'", 'R', 'D', "R'", "D'", 'R', 'D', "R'", "D'", 'R', 'D', "R'", "D'", 'R', 'D', "R'", 'D', 'F', 'D', "F'", "D'", 'B', 'D', "B'", "D'", "L'", "D'", 'L', 'D', "F'", "D'", 'F', 'D', 'L', 'D', "L'", 'R', 'D', "R'", "D'", "B'", "D'", 'B', 'B', 'D', "B'", "D'", "L'", "D'", 'L', 'D', 'D', 'R', 'D', "R'", "D'", "B'", "D'", 'B', "D'", "R'", "D'", 'R', 'D', 'F', 'D', "F'", 'L', 'B', 'D', "B'", "D'", 'B', 'D', "B'", "L'", 'D', 'L', 'D', 'D', "L'", 'D', 'L', 'D', "L'", 'D', 'L', 'D', 'D', "L'", 'D', 'L', "D'", "R'", 'D', "L'", "D'", 'R', 'D', 'L', "D'", "R'", 'D', "L'", "D'", 'R', 'L', "F'", "L'", 'F', 'L', "F'", "L'", 'F', 'D', 'D', 'L', "F'", "L'", 'F', 'L', "F'", "L'", 'F', 'D', 'L', "F'", "L'", 'F', 'L', "F'", "L'", 'F', 'D'])
+	# c.solve()
+	c.print_solution()

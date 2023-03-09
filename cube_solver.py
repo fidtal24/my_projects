@@ -2,6 +2,7 @@ import rubik as r
 import numpy as np
 import random
 import itertools
+import patterns
 
 # cubes
 CURR = 0
@@ -59,8 +60,11 @@ class InstructionsBuffer:
 	def print(self):
 		print(self.instructions)
 
+	def get_instruction_list(self) -> list[str]:
+		return self.instructions
+
 class Solver:
-	def __init__(self, start_configuration, dest_pattern=DEFAULT):
+	def __init__(self, start_configuration, dest_pattern=patterns.DEFAULT):
 		self.cubes = [r.Rubik(start_configuration), r.Rubik(dest_pattern)]
 		self.instruction_buffer = InstructionsBuffer()
 
@@ -89,7 +93,7 @@ class Solver:
 		self.play(instructions)
 
 	def val(self, cube: int, indices: list[int]) -> np.ndarray:
-		return self.cubes[cube].cube[tuple(indices)]
+		return self.cubes[cube].get_val(*tuple(indices))
 
 	def bring_face_to_front(self, cube: int, face: int, ref_face: int, ref_location: int=r.R):
 		self.cubes[cube].bring_face_to_front(face, ref_face, ref_location)
@@ -98,7 +102,7 @@ class Solver:
 		self.cubes[0].bring_face_to_front(face, ref_face, ref_location)
 		self.cubes[1].bring_face_to_front(face, ref_face, ref_location)
 
-	def solve(self):
+	def solve(self) -> list[str]:
 		algo_stages = [self.narkis, self.bottom_x, self.down_plus, self.down_rectangle, self.up_x,
 		 			   self.thick_plus, self.twisted_corners, self.final_run]
 		print("cube start:")
@@ -110,9 +114,10 @@ class Solver:
 			stage()
 
 		print("cube end:")
-		self.print_solution()
+		# self.print_solution()
 		print("Instructions to solve:")
 		self.instruction_buffer.print()
+		return self.instruction_buffer.get_instruction_list()
 
 	def clean_orientations(self):
 		l = []
